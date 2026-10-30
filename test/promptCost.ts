@@ -30,7 +30,7 @@ const skillPath = join(bundledAgentDir, "..", "resources", "task", "SKILL.md");
 const { skills, diagnostics } = loadSkillsFromDir({ dir: dirname(skillPath), source: "pi-task" });
 if (skills.length !== 1 || diagnostics.length > 0) throw new Error("Bundled task skill did not load cleanly");
 // Use a stable npm-install path so checkout path length does not skew comparisons.
-const listing = formatSkillsForPrompt([{ ...skills[0], filePath: "/home/user/.pi/agent/node_modules/@heyhuynhgiabuu/pi-task/resources/task/SKILL.md" }]);
+const listing = formatSkillsForPrompt([{ ...skills[0], filePath: "/home/user/.pi/agent/node_modules/@minhduydev/pi-task/resources/task/SKILL.md" }]);
 const entry = listing.slice(listing.indexOf("  <skill>"), listing.indexOf("  </skill>") + "  </skill>".length) + "\n";
 
 const rows: Array<[string, string]> = [

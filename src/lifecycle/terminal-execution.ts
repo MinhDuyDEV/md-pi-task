@@ -36,6 +36,8 @@ export interface TerminalExecutionOptions {
   piDir: string;
   prompt: string;
   piArgs: string[];
+  /** Extra environment for a Pi child (from the launch gate); pi-task's own variables win. */
+  childEnvironment?: Record<string, string>;
   /** Child runtime; "pi" (default) or "claude" (Claude Code CLI). */
   runtime?: "pi" | "claude";
   /** Durable Claude Code session UUID (runtime "claude"). */
@@ -103,6 +105,7 @@ export async function executeTerminalTask({
   deliveryGuard,
   clearTaskWidgetIfIdle,
   ensureTaskWidget,
+  childEnvironment,
 }: TerminalExecutionOptions) {
   const claudeRuntime = runtime === "claude";
   const owner = durableParentOf(sessionViewOf(ctx));
@@ -130,7 +133,9 @@ export async function executeTerminalTask({
       // PI_TASK_TOOL_DISABLED only matters for pi children (it disables the
       // pi-task tool inside the subagent's Pi process); opt-in issue #24
       // environment forwarding still applies to every runtime.
-      environment: claudeRuntime ? {} : { PI_TASK_TOOL_DISABLED: "1" },
+      environment: claudeRuntime
+        ? {}
+        : { ...childEnvironment, PI_TASK_TOOL_DISABLED: "1" },
       runtime,
       claudeSessionFile,
       label: `${agentName}-${id.slice(0, 8)}`,

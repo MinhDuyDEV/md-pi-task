@@ -1,14 +1,12 @@
-# @heyhuynhgiabuu/pi-task
+# @minhduydev/pi-task
+
+An independent, private fork of [pi-task](https://github.com/heyhuynhgiabuu/pi-task) (MIT, see LICENSE), kept for own use and unrelated to upstream. Not published.
+
+## Launch gate
+
+Before a Pi child starts, pi-task emits `pi-task:child-launch` on the extension event bus with `{ agentType, backend, compare, gate(promise) }`. A listener calls `gate()` synchronously with a promise of `{ env?, dropModelArgs? }`: `env` is added to the child's environment (pi-task's own variables win), `dropModelArgs` omits the agent's frontmatter `--model`/`--thinking`. A rejection refuses the launch and its message is the task result. With no listener nothing changes. Used by `pi-studio` to give each child its own Studio grant.
 
 Delegating task/subagent extension for [Pi](https://pi.dev). It adds a `task` tool that can run specialized subagents in foreground or background, show task progress in the TUI, and deliver background completion back to the parent assistant.
-
-## Demo
-
-![pi-task background task demo](./media/demo-background-task.webp)
-
-_Auto-playing preview of the 89s walkthrough (1 fps): spawning a background subagent in a tmux pane, watching the live tool-call progress in the parent pane, and reading the final result via the session JSONL._
-
-For the full high-quality 89s @ 56 fps version, [download the MP4](https://github.com/heyhuynhgiabuu/pi-task/releases/download/v0.2.0/demo-background-task.mp4).
 
 ## Features
 
@@ -28,13 +26,7 @@ For the full high-quality 89s @ 56 fps version, [download the MP4](https://githu
 
 ## Install
 
-```bash
-pi install npm:@heyhuynhgiabuu/pi-task
-```
-
-Latest release: https://github.com/heyhuynhgiabuu/pi-task/releases/latest
-
-Or load locally:
+Load locally (build first with `npm run build` to load by package path):
 
 `pi -e ./src/index.ts`
 

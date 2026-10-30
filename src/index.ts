@@ -165,6 +165,7 @@ import {
 import { resolveTaskCwd } from "./task-cwd.js";
 import { serializeTaskAdmission } from "./task-admission.js";
 import { handleTaskControl } from "./task-control-api.js";
+import { gateChildLaunch } from "./child-launch-gate.js";
 import { registerTaskSessionReplacementGuard } from "./lifecycle/session-switch-guard.js";
 import { readPersistedAgentHistoryTranscript } from "./lifecycle/agent-history.js";
 import {
@@ -1266,6 +1267,20 @@ export default function (pi: ExtensionAPI) {
         herdrBackend,
       } = backendResolution;
       const selectedBackend = resumeBackend ?? backendResolution.selectedBackend;
+      const launchGate = claudeRuntime
+        ? undefined
+        : await gateChildLaunch(pi.events, {
+            agentType: agent.name,
+            backend: selectedBackend,
+            compare: taskParams.compare === true,
+          });
+      if (launchGate && !launchGate.ok) {
+        return {
+          content: [{ type: "text" as const, text: launchGate.reason }],
+          details: { phase: "failed" as const, error: "launch refused" },
+          isError: true,
+        };
+      }
       // Fast mode: agent frontmatter is the explicit setting and wins over the
       // session's `--fast` flag. Terminal children launched with `--no-extensions`
       // load pi-task's own provider bridge instead of the user's extensions, so the
@@ -1418,7 +1433,9 @@ export default function (pi: ExtensionAPI) {
             deferTaskPrompt: true,
           })
         : buildPiArgs(
-        agent,
+        launchGate?.ok && launchGate.dropModelArgs
+          ? { ...agent, model: undefined, thinking: undefined }
+          : agent,
         sessionName,
         sessionDir,
         promptContent,
@@ -1520,6 +1537,7 @@ export default function (pi: ExtensionAPI) {
         runtime: claudeTaskRuntime,
         ...(claudeRuntime ? { claudeSessionId, claudeSessionFile } : {}),
         piArgs,
+        ...(launchGate?.ok ? { childEnvironment: launchGate.env } : {}),
         selectedBackend,
         requestedBackend,
         terminalBackend: herdrBackend,

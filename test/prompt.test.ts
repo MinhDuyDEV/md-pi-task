@@ -92,6 +92,7 @@ process.on("exit", () => {
     on(event: string, handler: () => void) {
       if (event === "session_shutdown") shutdown = handler;
     },
+    events: { emit() {}, on() { return () => {}; } },
     registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -170,6 +171,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -281,6 +283,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -357,6 +360,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -433,6 +437,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -521,6 +526,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -627,6 +633,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -742,6 +749,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -848,6 +856,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -1042,6 +1051,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -1120,6 +1130,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -1318,6 +1329,7 @@ if (process.platform !== "win32") {
         if (event === "session_start") sessionStartHandlers.push(handler);
         if (event === "session_shutdown") shutdown = handler as () => void;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
@@ -1466,6 +1478,7 @@ if (process.platform !== "win32") {
       on(event: string, handler: () => void) {
         if (event === "session_shutdown") shutdown = handler;
       },
+      events: { emit() {}, on() { return () => {}; } },
       registerMessageRenderer() {},
       registerFlag() {},
       getFlag() { return undefined; },
