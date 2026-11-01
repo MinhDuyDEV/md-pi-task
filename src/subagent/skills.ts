@@ -12,22 +12,13 @@ export function resolveDeclaredSkillPaths(
   const byName = new Map(available.map((skill) => [skill.name, skill.filePath]));
   const paths: string[] = [];
   const seen = new Set<string>();
-  const missing: string[] = [];
 
   for (const name of names) {
     const path = byName.get(name);
-    if (!path) {
-      missing.push(name);
-      continue;
-    }
-    if (!seen.has(path)) {
+    if (path && !seen.has(path)) {
       seen.add(path);
       paths.push(path);
     }
-  }
-
-  if (missing.length > 0) {
-    throw new Error(`Declared subagent skill(s) not found: ${missing.join(", ")}`);
   }
   return paths;
 }

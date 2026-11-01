@@ -14,7 +14,7 @@ const bundledAgentDir = fileURLToPath(new URL("../agents/", import.meta.url));
 
 test("bundled agents have catalog-safe prompts and tools", () => {
   const agents = loadAgentsFromDir(bundledAgentDir, "bundled");
-  assert.equal(agents.length, 6);
+  assert.equal(agents.length, 5);
   for (const agent of agents) {
     assert.notEqual(agent.description, ">", `${agent.name} has a folded description`);
     assert.doesNotMatch(
@@ -79,7 +79,7 @@ test("terminal subagents defer to Pi unless an agent explicitly selects a model"
 test("declared skill names resolve to native Pi skill paths", () => {
   assert.deepEqual(
     resolveDeclaredSkillPaths(
-      ["memory", "review"],
+      ["missing", "memory", "review", "memory"],
       [
         { name: "memory", filePath: "/skills/memory/SKILL.md" },
         { name: "review", filePath: "/skills/review/SKILL.md" },
@@ -87,10 +87,7 @@ test("declared skill names resolve to native Pi skill paths", () => {
     ),
     ["/skills/memory/SKILL.md", "/skills/review/SKILL.md"],
   );
-  assert.throws(
-    () => resolveDeclaredSkillPaths(["missing"], []),
-    /Declared subagent skill\(s\) not found: missing/,
-  );
+  assert.deepEqual(resolveDeclaredSkillPaths(["missing"], []), []);
 });
 
 test("native skill resolution honors project trust", async () => {
@@ -102,10 +99,7 @@ test("native skill resolution honors project trust", async () => {
     "---\nname: local\ndescription: local test skill\n---\nUse the local skill.\n",
   );
   try {
-    await assert.rejects(
-      resolveAgentSkillPaths(["local"], root, false),
-      /Declared subagent skill\(s\) not found: local/,
-    );
+    assert.deepEqual(await resolveAgentSkillPaths(["local"], root, false), []);
     const trustedPaths = await resolveAgentSkillPaths(["local"], root, true);
     assert.deepEqual(trustedPaths, [join(skillDir, "SKILL.md")]);
   } finally {
